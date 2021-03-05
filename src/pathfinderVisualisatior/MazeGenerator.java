@@ -1,5 +1,11 @@
 package pathfinderVisualisatior;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
+
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -10,20 +16,46 @@ public class MazeGenerator {
     private Grid grid;
     private final int width;
     private final int height;
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
 
-    public MazeGenerator(Grid grid, int startX, int startY, int endX, int endY){
+    private Timeline timeline;
+
+    final LinkedList<int[]> frontiers = new LinkedList<>();
+    final Random random = new Random();
+    int x;
+    int y;
+
+    MainWindow mainWindow;
+
+    public MazeGenerator(MainWindow mainWindow, Grid grid, int startX, int startY, int endX, int endY){
+        this.mainWindow = mainWindow;
         this.grid = grid;
         this.width = grid.getCols();
         this.height = grid.getRows();
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
         this.grid = fillWithWalls();
 
-        final LinkedList<int[]> frontiers = new LinkedList<>();
-        final Random random = new Random();
-        int x = random.nextInt(width);
-        int y = random.nextInt(height);
+        this.x = random.nextInt(width);
+        this.y = random.nextInt(height);
         frontiers.add(new int[]{x,y,x,y});
 
-        while (!frontiers.isEmpty() ){
+        startMazeGeneratorTimeline();
+    }
+
+    private void startMazeGeneratorTimeline() {
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(20),  this::generate));
+        this.timeline.setCycleCount(Timeline.INDEFINITE);
+        this.timeline.play();
+    }
+
+    private void generate(ActionEvent actionEvent) {
+        if (!frontiers.isEmpty() ){
             final int[] f = frontiers.remove(random.nextInt(frontiers.size() ) );
             x = f[2];
             y = f[3];
@@ -37,11 +69,15 @@ public class MazeGenerator {
                     frontiers.add(new int[]{x+1,y,x+2,y} );
                 if (y < height - 2 && grid.isWall(x, y + 2))
                     frontiers.add(new int[]{x,y+1,x,y+2} );
+                mainWindow.draw();
             }
+        } else {
+            grid.setStart(startX, startY);
+            grid.setEnd(endX, endY);
+            mainWindow.draw();
+            this.timeline.setCycleCount(0);
+            this.timeline.stop();
         }
-
-        grid.setStart(startX, startY);
-        grid.setEnd(endX, endY);
     }
 
     private Grid fillWithWalls() {

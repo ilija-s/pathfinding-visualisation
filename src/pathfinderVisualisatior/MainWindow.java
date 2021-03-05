@@ -40,6 +40,7 @@ public class MainWindow extends VBox {
     private boolean bfsInstantiated = false;
     private Grid grid = new Grid(height/ gridCells, width/ gridCells);
     private Bfs bfs;
+    private boolean diagonalSearch = true;
 
     public MainWindow() {
         HBox hbTop = new HBox(10);
@@ -66,7 +67,7 @@ public class MainWindow extends VBox {
 
     private void generateMaze(ActionEvent actionEvent) {
         disableAllButtons();
-        MazeGenerator mazeGenerator = new MazeGenerator(this.grid, this.startX, this.startY, this.endX, this.endY);
+        MazeGenerator mazeGenerator = new MazeGenerator(this, this.grid, this.startX, this.startY, this.endX, this.endY);
         this.grid = mazeGenerator.getGrid();
         enableAllButtons();
         draw();
@@ -99,7 +100,7 @@ public class MainWindow extends VBox {
 
     private void solveWithBFS(ActionEvent actionEvent) {
         if (startX != -1 && startY != -1 && endX != -1 && endY != -1) {
-            bfs = new Bfs(this, this.grid, this.startX, this.startY, false);
+            bfs = new Bfs(this, this.grid, this.startX, this.startY, diagonalSearch);
             bfsInstantiated = true;
             bfs.startSearchTimeline();
             return;
