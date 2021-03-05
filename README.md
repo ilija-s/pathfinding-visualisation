@@ -26,6 +26,9 @@ Usage
 * To select end point press "f"
 * To delete use "e" and for drawing walls use "d", select algorithm and press start
 
+Run
+---
+
 To run program you will need to have JavaFX downloaded (for Java versions above 8)  
 In Project Structure -> Libraries add path to JavaFX lib folder
 And finally go to Run -> Edit Configurations and in Program arguments add this line
