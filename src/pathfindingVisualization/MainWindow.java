@@ -1,4 +1,4 @@
-package pathfinderVisualisatior;
+package pathfindingVisualization;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -30,7 +30,7 @@ public class MainWindow extends VBox {
     private int width = 600;
     private int height = 600;
     private int gridCells = 30;
-    private float cellSize = width/gridCells;
+    private float cellSize = (float) width / gridCells;
     private int startX = -1;
     private int startY = -1;
     private int endX = -1;

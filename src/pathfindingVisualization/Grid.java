@@ -1,4 +1,4 @@
-package pathfinderVisualisatior;
+package pathfindingVisualization;
 
 public class Grid {
     public static final int PATH = 0;

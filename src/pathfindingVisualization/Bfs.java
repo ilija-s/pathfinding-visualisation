@@ -1,4 +1,4 @@
-package pathfinderVisualisatior;
+package pathfindingVisualization;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
