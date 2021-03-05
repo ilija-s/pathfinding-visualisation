@@ -25,6 +25,7 @@ public class MainWindow extends VBox {
     private static final int CLOSED = 6;
     private Button btnStart;
     private Button btnReset;
+    private Button btnGenerateMaze;
     private Canvas canvas;
     private int width = 600;
     private int height = 600;
@@ -45,13 +46,15 @@ public class MainWindow extends VBox {
         hbTop.setPadding(new Insets(5, 10, 5, 10));
         this.btnStart = new Button("Start");
         this.btnReset = new Button("Reset");
-        hbTop.getChildren().addAll(btnStart, btnReset);
+        this.btnGenerateMaze = new Button("Generate Maze");
+        hbTop.getChildren().addAll(btnStart, btnGenerateMaze, btnReset);
         this.canvas = new Canvas(width, height);
+        this.btnStart.setOnAction(this::solveWithBFS);
+        this.btnGenerateMaze.setOnAction(this::generateMaze);
+        this.btnReset.setOnAction(this::reset);
         this.canvas.setOnMousePressed(this::drawSquare);
         this.canvas.setOnMouseDragged(this::drawSquare);
         this.canvas.setOnKeyPressed(this::handlePressedKey);
-        this.btnStart.setOnAction(this::solveWithBFS);
-        this.btnReset.setOnAction(this::reset);
 
         this.affine = new Affine();
         this.affine.appendScale(width/ cellSize, height/ cellSize); // size of cell
@@ -61,11 +64,16 @@ public class MainWindow extends VBox {
         this.getChildren().addAll(hbTop, this.canvas);
     }
 
+    private void generateMaze(ActionEvent actionEvent) {
+        disableAllButtons();
+        MazeGenerator mazeGenerator = new MazeGenerator(this.grid, this.startX, this.startY, this.endX, this.endY);
+        this.grid = mazeGenerator.getGrid();
+        enableAllButtons();
+        draw();
+    }
+
     private void reset(ActionEvent actionEvent) {
-        this.startX = -1;
-        this.startY = -1;
-        this.endX = -1;
-        this.endY = -1;
+        disableAllButtons();
         grid.resetGrid();
         if (bfsInstantiated) {
             bfs.setGrid(this.grid);
@@ -74,12 +82,26 @@ public class MainWindow extends VBox {
             bfs.reset();
         }
         this.drawMode = 1;
+        enableAllButtons();
+    }
+
+    private void enableAllButtons() {
+        this.btnStart.setDisable(false);
+        this.btnGenerateMaze.setDisable(false);
+        this.btnReset.setDisable(false);
+    }
+
+    private void disableAllButtons() {
+        this.btnStart.setDisable(true);
+        this.btnGenerateMaze.setDisable(true);
+        this.btnReset.setDisable(true);
     }
 
     private void solveWithBFS(ActionEvent actionEvent) {
         if (startX != -1 && startY != -1 && endX != -1 && endY != -1) {
-            bfs = new Bfs(this, this.grid, this.startX, this.startY);
+            bfs = new Bfs(this, this.grid, this.startX, this.startY, false);
             bfsInstantiated = true;
+            bfs.startSearchTimeline();
             return;
         }
         System.out.println("Not valid start or end");

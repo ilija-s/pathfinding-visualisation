@@ -15,29 +15,34 @@ public class Bfs {
     private Grid grid;
     private int startX;
     private int startY;
+    private boolean diagonalSearch = false;
     private boolean[][] visited;
     private Deque<Node> nodes = new LinkedList<>();
     private Node endNode;
 
-    public Bfs(MainWindow mainWindow, Grid grid, int startX, int startY) {
+    public Bfs(MainWindow mainWindow, Grid grid, int startX, int startY, boolean diagonalSearch) {
         this.visited = new boolean[grid.getRows()][grid.getCols()];
         this.grid = grid;
         this.startX = startX;
         this.startY = startY;
+        this.diagonalSearch = diagonalSearch;
         this.mainWindow = mainWindow;
         nodes.addFirst(new Node(startX, startY, null));
         visited[startX][startY] = true;
-        startSearchTimeline();
     }
 
-    private void startSearchTimeline() {
+    public void startSearchTimeline() {
         this.timeline = new Timeline(new KeyFrame(Duration.millis(20), this::search));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
         this.timeline.play();
     }
 
     private void search(ActionEvent actionEvent) {
-        int retval = this.searchWithDiagonals();
+        int retval;
+        if (diagonalSearch)
+            retval = this.searchWithDiagonals();
+        else
+            retval = this.search();
         if (retval == NOPATH) {
             System.out.println("Path not found!");
             stopTimeline();
