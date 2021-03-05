@@ -27,17 +27,17 @@ public class Bfs {
         this.mainWindow = mainWindow;
         nodes.addFirst(new Node(startX, startY, null));
         visited[startX][startY] = true;
-        initTimeline();
+        startSearchTimeline();
     }
 
-    private void initTimeline() {
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(20), this::nextStep));
+    private void startSearchTimeline() {
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(20), this::search));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
         this.timeline.play();
     }
 
-    private void nextStep(ActionEvent actionEvent) {
-        int retval = this.nextStep();
+    private void search(ActionEvent actionEvent) {
+        int retval = this.searchWithDiagonals();
         if (retval == NOPATH) {
             System.out.println("Path not found!");
             stopTimeline();
@@ -65,12 +65,14 @@ public class Bfs {
         }
     }
 
-    public int nextStep() {
+    public int search() {
         Node tmp;
 
         if (!nodes.isEmpty()) {
             tmp = nodes.getLast();
             nodes.removeLast();
+            if (!grid.isStart(tmp.x, tmp.y))
+                grid.setClosed(tmp.x, tmp.y);
 
             if (grid.isEnd(tmp.x, tmp.y)) {
                 endNode = tmp;
@@ -112,6 +114,98 @@ public class Bfs {
                     return END;
                 }
                 grid.setVisited(tmp.x, tmp.y + 1);
+            }
+        } else {
+            return NOPATH;
+        }
+        return 1;
+    }
+
+    public int searchWithDiagonals() {
+        Node tmp;
+
+        if (!nodes.isEmpty()) {
+            tmp = nodes.getLast();
+            nodes.removeLast();
+            if (!grid.isStart(tmp.x, tmp.y))
+                grid.setClosed(tmp.x, tmp.y);
+
+            if (grid.isEnd(tmp.x, tmp.y)) {
+                endNode = tmp;
+                return END;
+            }
+
+            if (allowed(tmp.x - 1, tmp.y)) {
+                nodes.addFirst(new Node(tmp.x - 1, tmp.y, tmp));
+                visited[tmp.x - 1][tmp.y] = true;
+                if (grid.isEnd(tmp.x - 1, tmp.y)) {
+                    endNode = nodes.getFirst();
+                    return END;
+                }
+                grid.setVisited(tmp.x - 1, tmp.y);
+            }
+            if (allowed(tmp.x + 1, tmp.y)) {
+                nodes.addFirst(new Node(tmp.x + 1, tmp.y, tmp));
+                visited[tmp.x + 1][tmp.y] = true;
+                if (grid.isEnd(tmp.x + 1, tmp.y)) {
+                    endNode = nodes.getFirst();
+                    return END;
+                }
+                grid.setVisited(tmp.x + 1, tmp.y);
+            }
+            if (allowed(tmp.x, tmp.y - 1)) {
+                nodes.addFirst(new Node(tmp.x, tmp.y - 1, tmp));
+                visited[tmp.x][tmp.y - 1] = true;
+                if (grid.isEnd(tmp.x, tmp.y - 1)) {
+                    endNode = nodes.getFirst();
+                    return END;
+                }
+                grid.setVisited(tmp.x, tmp.y - 1);
+            }
+            if (allowed(tmp.x, tmp.y + 1)) {
+                nodes.addFirst(new Node(tmp.x, tmp.y + 1, tmp));
+                visited[tmp.x][tmp.y + 1] = true;
+                if (grid.isEnd(tmp.x, tmp.y + 1)) {
+                    endNode = nodes.getFirst();
+                    return END;
+                }
+                grid.setVisited(tmp.x, tmp.y + 1);
+            }
+            if (allowed(tmp.x - 1, tmp.y - 1)) {
+                nodes.addFirst(new Node(tmp.x - 1, tmp.y - 1, tmp));
+                visited[tmp.x - 1][tmp.y - 1] = true;
+                if (grid.isEnd(tmp.x - 1, tmp.y - 1)) {
+                    endNode = nodes.getFirst();
+                    return END;
+                }
+                grid.setVisited(tmp.x - 1, tmp.y - 1);
+            }
+            if (allowed(tmp.x + 1, tmp.y + 1)) {
+                nodes.addFirst(new Node(tmp.x + 1, tmp.y + 1, tmp));
+                visited[tmp.x + 1][tmp.y + 1] = true;
+                if (grid.isEnd(tmp.x + 1, tmp.y + 1)) {
+                    endNode = nodes.getFirst();
+                    return END;
+                }
+                grid.setVisited(tmp.x + 1, tmp.y + 1);
+            }
+            if (allowed(tmp.x - 1, tmp.y + 1)) {
+                nodes.addFirst(new Node(tmp.x - 1, tmp.y + 1, tmp));
+                visited[tmp.x - 1][tmp.y + 1] = true;
+                if (grid.isEnd(tmp.x - 1, tmp.y + 1)) {
+                    endNode = nodes.getFirst();
+                    return END;
+                }
+                grid.setVisited(tmp.x - 1, tmp.y + 1);
+            }
+            if (allowed(tmp.x + 1, tmp.y - 1)) {
+                nodes.addFirst(new Node(tmp.x + 1, tmp.y - 1, tmp));
+                visited[tmp.x + 1][tmp.y - 1] = true;
+                if (grid.isEnd(tmp.x + 1, tmp.y - 1)) {
+                    endNode = nodes.getFirst();
+                    return END;
+                }
+                grid.setVisited(tmp.x + 1, tmp.y - 1);
             }
         } else {
             return NOPATH;

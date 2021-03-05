@@ -7,6 +7,7 @@ public class Grid {
     public static final int END = 3;
     public static final int VISITED = 4;
     public static final int SHORTESTPATH = 5;
+    public static final int CLOSED = 6;
     private int[][] grid;
     private int rows;
     private int cols;
@@ -53,6 +54,10 @@ public class Grid {
         setState(row, col, SHORTESTPATH);
     }
 
+    public void setClosed(int row, int col) {
+        setState(row, col, CLOSED);
+    }
+
     public void setState(int row, int col, int state) {
         if (isValid(row, col)) {
             this.grid[row][col] = state;
@@ -83,6 +88,10 @@ public class Grid {
         return grid[row][col] == SHORTESTPATH;
     }
 
+    public boolean isClosed(int row, int col) {
+        return grid[row][col] == CLOSED;
+    }
+
     public boolean isValid(int x, int y) {
         return x >= 0 && x < this.rows && y >= 0 && y < this.cols;
     }
@@ -98,4 +107,5 @@ public class Grid {
     public int getCellValue(int x, int y) {
         return grid[x][y];
     }
+
 }

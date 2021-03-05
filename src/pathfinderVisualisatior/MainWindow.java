@@ -22,6 +22,7 @@ public class MainWindow extends VBox {
     private static final int FINISH = 3;
     private static final int VISITED = 4;
     private static final int SHORTESTPATH = 5;
+    private static final int CLOSED = 6;
     private Button btnStart;
     private Button btnReset;
     private Canvas canvas;
@@ -67,6 +68,9 @@ public class MainWindow extends VBox {
         this.endY = -1;
         grid.resetGrid();
         if (bfsInstantiated) {
+            bfs.setGrid(this.grid);
+            bfs.setStartX(this.startX);
+            bfs.setStartY(this.startY);
             bfs.reset();
         }
         this.drawMode = 1;
@@ -174,11 +178,16 @@ public class MainWindow extends VBox {
                 graphics.fillRect(y, x, 1, 1);
             }
             case VISITED -> {
-                graphics.setFill(Color.BLUEVIOLET);
+                graphics.setFill(Color.MEDIUMBLUE);
                 graphics.fillRect(y, x, 1, 1);
             }
             case SHORTESTPATH -> {
                 graphics.setFill(Color.YELLOW);
+                graphics.fillRect(y, x, 1, 1);
+            }
+
+            case CLOSED -> {
+                graphics.setFill(Color.BLUEVIOLET);
                 graphics.fillRect(y, x, 1, 1);
             }
         }
