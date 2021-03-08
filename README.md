@@ -22,6 +22,8 @@ For now this app allows user to choose between few implemented pathfinding algor
 * DFS (depth first search) which does not guarantee the shortest path and is probably the worst one 
 * A* algorithm is one of the best if not the best pathfinding algorithm, it uses heuristics to find the shortest path faster than Dijkstra's algorithm
 
+There is also one Maze generation algorithm, here I've implemented Prim's maze generation algorithm.
+
 Usage
 -----
 
