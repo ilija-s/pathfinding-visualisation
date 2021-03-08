@@ -17,7 +17,10 @@ Colors
 Description
 -----------
 
-For now this app allows user to choose between few implemented pathfinding algorithms like BFS (breadth-first search), DFS (depth first search) and Dijksra's algorithm.
+For now this app allows user to choose between few implemented pathfinding algorithms like:
+* BFS (breadth-first search) guarantees the shortest path, it is a pretty good algorithm for shortest paths on unweighted graphs
+* DFS (depth first search) which does not guarantee the shortest path and is probably the worst one 
+* A* algorithm is one of the best if not the best pathfinding algorithm, it uses heuristics to find the shortest path faster than Dijkstra's algorithm
 
 Usage
 -----
