@@ -42,7 +42,7 @@ public class MazeGenerator {
 
         this.x = random.nextInt(width);
         this.y = random.nextInt(height);
-        frontiers.add(new int[]{x,y,x,y});
+        frontiers.add(new int[]{x, y, x, y});
 
         startMazeGeneratorTimeline();
     }
@@ -61,18 +61,18 @@ public class MazeGenerator {
             if (grid.isWall(x, y)) {
                 this.grid.setPath(x, y); this.grid.setPath(f[0], f[1]);
                 if (x >= 2 && grid.isWall(x - 2, y))
-                    frontiers.add(new int[]{x-1,y,x-2,y} );
+                    frontiers.add(new int[]{x - 1, y    , x - 2, y} );
                 if (y >= 2 && grid.isWall(x, y - 2) )
-                    frontiers.add(new int[]{x,y-1,x,y-2} );
+                    frontiers.add(new int[]{x    , y - 1, x    , y - 2} );
                 if (x < width - 2 && grid.isWall(x + 2, y))
-                    frontiers.add(new int[]{x+1,y,x+2,y} );
+                    frontiers.add(new int[]{x + 1, y    , x + 2, y} );
                 if (y < height - 2 && grid.isWall(x, y + 2))
-                    frontiers.add(new int[]{x,y+1,x,y+2} );
+                    frontiers.add(new int[]{x    , y + 1, x    , y + 2} );
+                grid.setStart(startX, startY);
+                grid.setEnd(endX, endY);
                 mainWindow.draw();
             }
         } else {
-            grid.setStart(startX, startY);
-            grid.setEnd(endX, endY);
             mainWindow.draw();
             this.timeline.setCycleCount(0);
             this.timeline.stop();

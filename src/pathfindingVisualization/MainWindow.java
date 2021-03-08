@@ -45,10 +45,12 @@ public class MainWindow extends VBox {
     public MainWindow() {
         HBox hbTop = new HBox(10);
         hbTop.setPadding(new Insets(5, 10, 5, 10));
+
         this.btnStart = new Button("Start");
         this.btnReset = new Button("Reset");
         this.btnGenerateMaze = new Button("Generate Maze");
         hbTop.getChildren().addAll(btnStart, btnGenerateMaze, btnReset);
+
         this.canvas = new Canvas(width, height);
         this.btnStart.setOnAction(this::solveWithBFS);
         this.btnGenerateMaze.setOnAction(this::generateMaze);
