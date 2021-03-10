@@ -44,7 +44,7 @@ public class Bfs {
         else
             retval = this.search();
         if (retval == NOPATH) {
-            System.out.println("Path not found!");
+            this.mainWindow.getLblPathNotFound().setVisible(true);
             stopTimeline();
         } else if (retval == END) {
             stopTimeline();

@@ -1,0 +1,28 @@
+.button {
+    -fx-background-color: #008CBA;
+    -fx-border-style: none;
+    -fx-border-color: white;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-font-size: 16px;
+}
+
+.button:hover {
+    -fx-background-color: whitesmoke;
+    -fx-text-fill: black;
+    -fx-border-style: solid;
+    -fx-border-color: #008CBA;
+    -fx-cursor: hand;
+}
+
+.label {
+    -fx-padding: 8px 0px 0px 0px;
+    -fx-text-alignment: center;
+    -fx-text-fill: #F44336;
+    -fx-font-size: 18px;
+}
+
+.disabled {
+    -fx-opacity: 0.6;
+    -fx-cursor: null;
+}

@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -26,9 +27,10 @@ public class MainWindow extends VBox {
     private Button btnStart;
     private Button btnReset;
     private Button btnGenerateMaze;
+    private Label lblPathNotFound;
     private Canvas canvas;
-    private int width = 600;
-    private int height = 600;
+    private int width = 900;
+    private int height = 900;
     private int gridCells = 30;
     private float cellSize = (float) width / gridCells;
     private int startX = -1;
@@ -49,7 +51,9 @@ public class MainWindow extends VBox {
         this.btnStart = new Button("Start");
         this.btnReset = new Button("Reset");
         this.btnGenerateMaze = new Button("Generate Maze");
-        hbTop.getChildren().addAll(btnStart, btnGenerateMaze, btnReset);
+        this.lblPathNotFound = new Label("Path not found!");
+        this.lblPathNotFound.setVisible(false);
+        hbTop.getChildren().addAll(btnStart, btnGenerateMaze, btnReset, lblPathNotFound);
 
         this.canvas = new Canvas(width, height);
         this.btnStart.setOnAction(this::solveWithBFS);
@@ -77,6 +81,7 @@ public class MainWindow extends VBox {
 
     private void reset(ActionEvent actionEvent) {
         disableAllButtons();
+        this.lblPathNotFound.setVisible(false);
         grid.resetGrid();
         if (bfsInstantiated) {
             bfs.setGrid(this.grid);
@@ -107,7 +112,7 @@ public class MainWindow extends VBox {
             bfs.startSearchTimeline();
             return;
         }
-        System.out.println("Not valid start or end");
+        this.lblPathNotFound.setVisible(true);
     }
 
     private void handlePressedKey(KeyEvent keyEvent) {
@@ -220,5 +225,9 @@ public class MainWindow extends VBox {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    public Label getLblPathNotFound() {
+        return lblPathNotFound;
     }
 }

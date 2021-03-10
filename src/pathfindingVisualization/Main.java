@@ -10,8 +10,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         MainWindow mainWindow = new MainWindow();
 
+        Scene scene = new Scene(mainWindow, 900, 940);
+        scene.getStylesheets().add("/pathfindingVisualization/style.css");
         primaryStage.setTitle("Pathfinding Visualisator");
-        primaryStage.setScene(new Scene(mainWindow, 600, 640));
+        primaryStage.setScene(scene);
         primaryStage.show();
         mainWindow.getCanvas().requestFocus();
 
