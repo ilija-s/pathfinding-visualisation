@@ -10,15 +10,34 @@ Colors
 * Black represents wall cells
 * Green represents start cell
 * Red represents end cell
-* Purple represents all the visited cells
+* Blue represents all the cells that are visited and not yet closed
+* Purple represents all the visited cells that are closed
 * Yellow represents one of possibly more shortest paths
 
 Description
 -----------
 
-For now this app allows user to choose between few implemented pathfinding algorithms like BFS (breadth-first search), DFS (depth first search) and Dijksra's algorithm.
+For now this app allows user to choose between few implemented pathfinding algorithms like:
+* BFS (breadth-first search) guarantees the shortest path, it is a pretty good algorithm for shortest paths on unweighted graphs
+* DFS (depth first search) which does not guarantee the shortest path and is probably the worst one 
+* A* algorithm is one of the best if not the best pathfinding algorithm, it uses heuristics to find the shortest path faster than Dijkstra's algorithm
+
+There is also one Maze generation algorithm, here I've implemented Prim's maze generation algorithm.
 
 Usage
 -----
 
-To select start point press "s" key and select cell, to select end point press "f", for deleting use "e" and for drawing walls use "d", select algorithm and press start
+* To select start point press "s" key and select cell
+* To select end point press "f"
+* To delete use "e" and for drawing walls use "d", select algorithm and press start
+
+Run
+---
+
+To run program you will need to have JavaFX downloaded (for Java versions above 8)  
+In Project Structure -> Libraries add path to JavaFX lib folder
+And finally go to Run -> Edit Configurations and in Program arguments add this line
+
+```
+--module-path /home/PATH_TO_JAVAFX/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml
+```
