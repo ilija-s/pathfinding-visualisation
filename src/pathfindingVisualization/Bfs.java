@@ -58,67 +58,55 @@ public class Bfs {
         this.timeline.stop();
     }
 
-    private static class Node {
-        private int x;
-        private int y;
-        Node parent;
-
-        public Node(int x, int y, Node parent) {
-            this.x = x;
-            this.y = y;
-            this.parent = parent;
-        }
-    }
-
     public int search() {
         Node tmp;
 
         if (!nodes.isEmpty()) {
             tmp = nodes.getLast();
             nodes.removeLast();
-            if (!grid.isStart(tmp.x, tmp.y))
-                grid.setClosed(tmp.x, tmp.y);
+            if (!grid.isStart(tmp.getX(), tmp.getY()))
+                grid.setClosed(tmp.getX(), tmp.getY());
 
-            if (grid.isEnd(tmp.x, tmp.y)) {
+            if (grid.isEnd(tmp.getX(), tmp.getY())) {
                 endNode = tmp;
                 return END;
             }
 
-            if (allowed(tmp.x - 1, tmp.y)) {
-                nodes.addFirst(new Node(tmp.x - 1, tmp.y, tmp));
-                visited[tmp.x - 1][tmp.y] = true;
-                if (grid.isEnd(tmp.x - 1, tmp.y)) {
+            if (allowed(tmp.getX() - 1, tmp.getY())) {
+                nodes.addFirst(new Node(tmp.getX() - 1, tmp.getY(), tmp));
+                visited[endNode.getX() - 1][tmp.getY()] = true;
+                if (grid.isEnd(tmp.getX() - 1, tmp.getY())) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x - 1, tmp.y);
+                grid.setVisited(tmp.getX() - 1, tmp.getY());
             }
-            if (allowed(tmp.x + 1, tmp.y)) {
-                nodes.addFirst(new Node(tmp.x + 1, tmp.y, tmp));
-                visited[tmp.x + 1][tmp.y] = true;
-                if (grid.isEnd(tmp.x + 1, tmp.y)) {
+            if (allowed(tmp.getX() + 1, tmp.getY())) {
+                nodes.addFirst(new Node(tmp.getX() + 1, tmp.getY(), tmp));
+                visited[tmp.getX() + 1][tmp.getY()] = true;
+                if (grid.isEnd(tmp.getX() + 1, tmp.getY())) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x + 1, tmp.y);
+                grid.setVisited(tmp.getX() + 1, tmp.getY());
             }
-            if (allowed(tmp.x, tmp.y - 1)) {
-                nodes.addFirst(new Node(tmp.x, tmp.y - 1, tmp));
-                visited[tmp.x][tmp.y - 1] = true;
-                if (grid.isEnd(tmp.x, tmp.y - 1)) {
+            if (allowed(tmp.getX(), tmp.getY() - 1)) {
+                nodes.addFirst(new Node(tmp.getX(), tmp.getY() - 1, tmp));
+                visited[tmp.getX()][tmp.getY() - 1] = true;
+                if (grid.isEnd(tmp.getX(), tmp.getY() - 1)) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x, tmp.y - 1);
+                grid.setVisited(tmp.getX(), tmp.getY() - 1);
             }
-            if (allowed(tmp.x, tmp.y + 1)) {
-                nodes.addFirst(new Node(tmp.x, tmp.y + 1, tmp));
-                visited[tmp.x][tmp.y + 1] = true;
-                if (grid.isEnd(tmp.x, tmp.y + 1)) {
+            if (allowed(tmp.getX(), tmp.getY() + 1)) {
+                nodes.addFirst(new Node(tmp.getX(), tmp.getY() + 1, tmp));
+                visited[tmp.getX()][tmp.getY() + 1] = true;
+                if (grid.isEnd(tmp.getX(), tmp.getY() + 1)) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x, tmp.y + 1);
+                grid.setVisited(tmp.getX(), tmp.getY() + 1);
             }
         } else {
             return NOPATH;
@@ -132,85 +120,85 @@ public class Bfs {
         if (!nodes.isEmpty()) {
             tmp = nodes.getLast();
             nodes.removeLast();
-            if (!grid.isStart(tmp.x, tmp.y))
-                grid.setClosed(tmp.x, tmp.y);
+            if (!grid.isStart(tmp.getX(), tmp.getY()))
+                grid.setClosed(tmp.getX(), tmp.getY());
 
-            if (grid.isEnd(tmp.x, tmp.y)) {
+            if (grid.isEnd(tmp.getX(), tmp.getY())) {
                 endNode = tmp;
                 return END;
             }
 
-            if (allowed(tmp.x - 1, tmp.y)) {
-                nodes.addFirst(new Node(tmp.x - 1, tmp.y, tmp));
-                visited[tmp.x - 1][tmp.y] = true;
-                if (grid.isEnd(tmp.x - 1, tmp.y)) {
+            if (allowed(tmp.getX() - 1, tmp.getY())) {
+                nodes.addFirst(new Node(tmp.getX() - 1, tmp.getY(), tmp));
+                visited[tmp.getX() - 1][tmp.getY()] = true;
+                if (grid.isEnd(tmp.getX() - 1, tmp.getY())) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x - 1, tmp.y);
+                grid.setVisited(tmp.getX() - 1, tmp.getY());
             }
-            if (allowed(tmp.x + 1, tmp.y)) {
-                nodes.addFirst(new Node(tmp.x + 1, tmp.y, tmp));
-                visited[tmp.x + 1][tmp.y] = true;
-                if (grid.isEnd(tmp.x + 1, tmp.y)) {
+            if (allowed(tmp.getX() + 1, tmp.getY())) {
+                nodes.addFirst(new Node(tmp.getX() + 1, tmp.getY(), tmp));
+                visited[tmp.getX() + 1][tmp.getY()] = true;
+                if (grid.isEnd(tmp.getX() + 1, tmp.getY())) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x + 1, tmp.y);
+                grid.setVisited(tmp.getX() + 1, tmp.getY());
             }
-            if (allowed(tmp.x, tmp.y - 1)) {
-                nodes.addFirst(new Node(tmp.x, tmp.y - 1, tmp));
-                visited[tmp.x][tmp.y - 1] = true;
-                if (grid.isEnd(tmp.x, tmp.y - 1)) {
+            if (allowed(tmp.getX(), tmp.getY() - 1)) {
+                nodes.addFirst(new Node(tmp.getX(), tmp.getY() - 1, tmp));
+                visited[tmp.getX()][tmp.getY() - 1] = true;
+                if (grid.isEnd(tmp.getX(), tmp.getY() - 1)) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x, tmp.y - 1);
+                grid.setVisited(tmp.getX(), tmp.getY() - 1);
             }
-            if (allowed(tmp.x, tmp.y + 1)) {
-                nodes.addFirst(new Node(tmp.x, tmp.y + 1, tmp));
-                visited[tmp.x][tmp.y + 1] = true;
-                if (grid.isEnd(tmp.x, tmp.y + 1)) {
+            if (allowed(tmp.getX(), tmp.getY() + 1)) {
+                nodes.addFirst(new Node(tmp.getX(), tmp.getY() + 1, tmp));
+                visited[tmp.getX()][tmp.getY() + 1] = true;
+                if (grid.isEnd(tmp.getX(), tmp.getY() + 1)) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x, tmp.y + 1);
+                grid.setVisited(tmp.getX(), tmp.getY() + 1);
             }
-            if (allowed(tmp.x - 1, tmp.y - 1)) {
-                nodes.addFirst(new Node(tmp.x - 1, tmp.y - 1, tmp));
-                visited[tmp.x - 1][tmp.y - 1] = true;
-                if (grid.isEnd(tmp.x - 1, tmp.y - 1)) {
+            if (allowed(tmp.getX() - 1, tmp.getY() - 1)) {
+                nodes.addFirst(new Node(tmp.getX() - 1, tmp.getY() - 1, tmp));
+                visited[tmp.getX() - 1][tmp.getY() - 1] = true;
+                if (grid.isEnd(tmp.getX() - 1, tmp.getY() - 1)) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x - 1, tmp.y - 1);
+                grid.setVisited(tmp.getX() - 1, tmp.getY() - 1);
             }
-            if (allowed(tmp.x + 1, tmp.y + 1)) {
-                nodes.addFirst(new Node(tmp.x + 1, tmp.y + 1, tmp));
-                visited[tmp.x + 1][tmp.y + 1] = true;
-                if (grid.isEnd(tmp.x + 1, tmp.y + 1)) {
+            if (allowed(tmp.getX() + 1, tmp.getY() + 1)) {
+                nodes.addFirst(new Node(tmp.getX() + 1, tmp.getY() + 1, tmp));
+                visited[tmp.getX() + 1][tmp.getY() + 1] = true;
+                if (grid.isEnd(tmp.getX() + 1, tmp.getY() + 1)) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x + 1, tmp.y + 1);
+                grid.setVisited(tmp.getX() + 1, tmp.getY() + 1);
             }
-            if (allowed(tmp.x - 1, tmp.y + 1)) {
-                nodes.addFirst(new Node(tmp.x - 1, tmp.y + 1, tmp));
-                visited[tmp.x - 1][tmp.y + 1] = true;
-                if (grid.isEnd(tmp.x - 1, tmp.y + 1)) {
+            if (allowed(tmp.getX() - 1, tmp.getY() + 1)) {
+                nodes.addFirst(new Node(tmp.getX() - 1, tmp.getY() + 1, tmp));
+                visited[tmp.getX() - 1][tmp.getY() + 1] = true;
+                if (grid.isEnd(tmp.getX() - 1, tmp.getY() + 1)) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x - 1, tmp.y + 1);
+                grid.setVisited(tmp.getX() - 1, tmp.getY() + 1);
             }
-            if (allowed(tmp.x + 1, tmp.y - 1)) {
-                nodes.addFirst(new Node(tmp.x + 1, tmp.y - 1, tmp));
-                visited[tmp.x + 1][tmp.y - 1] = true;
-                if (grid.isEnd(tmp.x + 1, tmp.y - 1)) {
+            if (allowed(tmp.getX() + 1, tmp.getY() - 1)) {
+                nodes.addFirst(new Node(tmp.getX() + 1, tmp.getY() - 1, tmp));
+                visited[tmp.getX() + 1][tmp.getY() - 1] = true;
+                if (grid.isEnd(tmp.getX() + 1, tmp.getY() - 1)) {
                     endNode = nodes.getFirst();
                     return END;
                 }
-                grid.setVisited(tmp.x + 1, tmp.y - 1);
+                grid.setVisited(tmp.getX() + 1, tmp.getY() - 1);
             }
         } else {
             return NOPATH;
@@ -221,10 +209,10 @@ public class Bfs {
     private void backtrackPath() {
         Node tmp;
         tmp = endNode;
-        while (tmp.parent != null) {
-            tmp = tmp.parent;
-            if (!grid.isStart(tmp.x, tmp.y))
-                grid.setShortestPath(tmp.x, tmp.y);
+        while (tmp.getParent() != null) {
+            tmp = tmp.getParent();
+            if (!grid.isStart(tmp.getX(), tmp.getY()))
+                grid.setShortestPath(tmp.getX(), tmp.getY());
         }
     }
 
