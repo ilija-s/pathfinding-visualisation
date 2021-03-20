@@ -62,9 +62,10 @@ public class MainWindow extends VBox {
         this.btnReset = new Button("Reset");
         this.btnGenerateMaze = new Button("Generate Maze");
         this.cbDiagonal = new CheckBox("Diagonal search");
+        this.cbDiagonal.setSelected(true);
         this.lblPathNotFound = new Label("Path not found!");
         this.lblPathNotFound.setVisible(false);
-        hbTop.getChildren().addAll(btnAStar, btnBFS, btnDFS, btnGenerateMaze, btnReset, cbDiagonal, lblPathNotFound);
+        hbTop.getChildren().addAll(btnAStar, btnBFS, btnDFS, btnGenerateMaze, btnReset, lblPathNotFound);
 
         this.canvas = new Canvas(width, height);
         this.btnAStar.setOnAction(this::solveWithAStar);
@@ -154,7 +155,7 @@ public class MainWindow extends VBox {
         if (startX != -1 && endX != -1) {
             aStar = new AStar(this, grid, startX, startY, endX, endY);
             aStarInstantiated = true;
-            aStar.startAStarSearch();
+            aStar.startSearchTimeline();
         }
     }
 

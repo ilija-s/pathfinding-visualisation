@@ -1,6 +1,9 @@
 package pathfindingVisualization;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
 import java.util.*;
 
@@ -13,6 +16,7 @@ public class AStar {
     private Node endNode;
     private List<Node> open;
     private Set<Node> closed;
+    private boolean endFound = false;
 
     public AStar(MainWindow mainWindow, Grid grid, int startX, int startY, int endX, int endY) {
         this.mainWindow = mainWindow;
@@ -27,7 +31,20 @@ public class AStar {
     }
 
     private int search() {
-        while (!open.isEmpty()) {
+        if (endFound) {
+            if (endNode.getParent() != null) {
+                if (endNode.getX() == startNode.getX() && endNode.getY() == startNode.getY()) {
+                    grid.setStart(startNode.getX(), startNode.getY());
+                    return 1;
+                }
+                endNode = endNode.getParent();
+                grid.setShortestPath(endNode.getX(), endNode.getY());
+                grid.setStart(startNode.getX(), startNode.getY());
+                return -1;
+            } else {
+                return 1;
+            }
+        } else if (!open.isEmpty()) {
             Node current = open.get(0);
             for (int i = 1; i < open.size(); i++) {
                 Node firstOpen = open.get(i);
@@ -38,17 +55,20 @@ public class AStar {
             }
             open.remove(current);
             closed.add(current);
+            grid.setClosed(current.getX(), current.getY());
+            grid.setStart(startNode.getX(), startNode.getY());
+            grid.setEnd(endNode.getX(), endNode.getY());
 
             if (current.getX() == endNode.getX() && current.getY() == endNode.getY()) {
                 endNode.setParent(current.getParent());
-                return 1;
+                endFound = true;
+                return -1;
             }
 
             for (Node node : grid.getNeighbours(current)) {
-                if (closed.contains(node) || visited[node.getX()][node.getY()]) {
+                if (closed.contains(node)) {
                     continue;
                 }
-                visited[node.getX()][node.getY()] = true;
                 int newCostToNeighbour = current.getG() + getDistance(current, node);
                 if (newCostToNeighbour < node.getG() || !open.contains(node)) {
                     node.setG(newCostToNeighbour);
@@ -56,21 +76,28 @@ public class AStar {
                     node.setParent(current);
 
                     if (!open.contains(node)) {
+                        grid.setVisited(node.getX(), node.getY());
                         open.add(node);
                     }
                 }
             }
+            grid.setEnd(endNode.getX(), endNode.getY());
+            return -1;
+        } else {
+            return 0;
         }
-        return 0;
     }
 
-    public void startAStarSearch() {
+    public void startAStarSearch(ActionEvent a) {
         int retval = search();
         if (retval == 1) {
-            System.out.println("Path found!");
-        } else {
-            System.out.println("Path not found!");
+            stopTimeline();
+        } else if (retval == 0){
+            this.mainWindow.getLblPathNotFound().setVisible(true);
+            stopTimeline();
         }
+
+        this.mainWindow.draw();
     }
 
     private int getDistance(Node nodeA, Node nodeB) {
@@ -93,6 +120,18 @@ public class AStar {
     }
 
     public void reset() {
-        visited = new boolean[grid.getRows()][grid.getCols()];
+        setStart(-1, -1);
+        mainWindow.draw();
+    }
+
+    public void startSearchTimeline() {
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(30), this::startAStarSearch));
+        this.timeline.setCycleCount(Timeline.INDEFINITE);
+        this.timeline.play();
+    }
+
+    private void stopTimeline() {
+        this.timeline.setCycleCount(0);
+        this.timeline.stop();
     }
 }

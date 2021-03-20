@@ -19,6 +19,7 @@ public class Bfs {
     private boolean[][] visited;
     private Deque<Node> nodes = new LinkedList<>();
     private Node endNode;
+    private boolean endFound = false;
 
     public Bfs(MainWindow mainWindow, Grid grid, int startX, int startY, boolean diagonalSearch) {
         this.visited = new boolean[grid.getRows()][grid.getCols()];
@@ -49,7 +50,6 @@ public class Bfs {
             stopTimeline();
         } else if (retval == END) {
             stopTimeline();
-            backtrackPath();
         }
         this.mainWindow.draw();
     }
@@ -117,8 +117,15 @@ public class Bfs {
 
     public int searchWithDiagonals() {
         Node tmp;
-
-        if (!nodes.isEmpty()) {
+        if (endFound) {
+            if (endNode.getParent() != null) {
+                endNode = endNode.getParent();
+                if (!grid.isStart(endNode.getX(), endNode.getY()))
+                    grid.setShortestPath(endNode.getX(), endNode.getY());
+            } else {
+                return END;
+            }
+        } else if (!nodes.isEmpty()) {
             tmp = nodes.getLast();
             nodes.removeLast();
             if (!grid.isStart(tmp.getX(), tmp.getY()))
@@ -126,15 +133,17 @@ public class Bfs {
 
             if (grid.isEnd(tmp.getX(), tmp.getY())) {
                 endNode = tmp;
-                return END;
+                endFound = true;
+                return 1;
             }
 
             if (allowed(tmp.getX() - 1, tmp.getY())) {
                 nodes.addFirst(new Node(tmp.getX() - 1, tmp.getY(), tmp));
                 visited[tmp.getX() - 1][tmp.getY()] = true;
                 if (grid.isEnd(tmp.getX() - 1, tmp.getY())) {
+                    endFound = true;
                     endNode = nodes.getFirst();
-                    return END;
+                    return 1;
                 }
                 grid.setVisited(tmp.getX() - 1, tmp.getY());
             }
@@ -142,8 +151,9 @@ public class Bfs {
                 nodes.addFirst(new Node(tmp.getX() + 1, tmp.getY(), tmp));
                 visited[tmp.getX() + 1][tmp.getY()] = true;
                 if (grid.isEnd(tmp.getX() + 1, tmp.getY())) {
+                    endFound = true;
                     endNode = nodes.getFirst();
-                    return END;
+                    return 1;
                 }
                 grid.setVisited(tmp.getX() + 1, tmp.getY());
             }
@@ -151,8 +161,9 @@ public class Bfs {
                 nodes.addFirst(new Node(tmp.getX(), tmp.getY() - 1, tmp));
                 visited[tmp.getX()][tmp.getY() - 1] = true;
                 if (grid.isEnd(tmp.getX(), tmp.getY() - 1)) {
+                    endFound = true;
                     endNode = nodes.getFirst();
-                    return END;
+                    return 1;
                 }
                 grid.setVisited(tmp.getX(), tmp.getY() - 1);
             }
@@ -160,8 +171,9 @@ public class Bfs {
                 nodes.addFirst(new Node(tmp.getX(), tmp.getY() + 1, tmp));
                 visited[tmp.getX()][tmp.getY() + 1] = true;
                 if (grid.isEnd(tmp.getX(), tmp.getY() + 1)) {
+                    endFound = true;
                     endNode = nodes.getFirst();
-                    return END;
+                    return 1;
                 }
                 grid.setVisited(tmp.getX(), tmp.getY() + 1);
             }
@@ -169,8 +181,9 @@ public class Bfs {
                 nodes.addFirst(new Node(tmp.getX() - 1, tmp.getY() - 1, tmp));
                 visited[tmp.getX() - 1][tmp.getY() - 1] = true;
                 if (grid.isEnd(tmp.getX() - 1, tmp.getY() - 1)) {
+                    endFound = true;
                     endNode = nodes.getFirst();
-                    return END;
+                    return 1;
                 }
                 grid.setVisited(tmp.getX() - 1, tmp.getY() - 1);
             }
@@ -178,8 +191,9 @@ public class Bfs {
                 nodes.addFirst(new Node(tmp.getX() + 1, tmp.getY() + 1, tmp));
                 visited[tmp.getX() + 1][tmp.getY() + 1] = true;
                 if (grid.isEnd(tmp.getX() + 1, tmp.getY() + 1)) {
+                    endFound = true;
                     endNode = nodes.getFirst();
-                    return END;
+                    return 1;
                 }
                 grid.setVisited(tmp.getX() + 1, tmp.getY() + 1);
             }
@@ -187,8 +201,9 @@ public class Bfs {
                 nodes.addFirst(new Node(tmp.getX() - 1, tmp.getY() + 1, tmp));
                 visited[tmp.getX() - 1][tmp.getY() + 1] = true;
                 if (grid.isEnd(tmp.getX() - 1, tmp.getY() + 1)) {
+                    endFound = true;
                     endNode = nodes.getFirst();
-                    return END;
+                    return 1;
                 }
                 grid.setVisited(tmp.getX() - 1, tmp.getY() + 1);
             }
@@ -196,25 +211,17 @@ public class Bfs {
                 nodes.addFirst(new Node(tmp.getX() + 1, tmp.getY() - 1, tmp));
                 visited[tmp.getX() + 1][tmp.getY() - 1] = true;
                 if (grid.isEnd(tmp.getX() + 1, tmp.getY() - 1)) {
+                    endFound = true;
                     endNode = nodes.getFirst();
-                    return END;
+                    return 1;
                 }
                 grid.setVisited(tmp.getX() + 1, tmp.getY() - 1);
             }
+            return 1;
         } else {
             return NOPATH;
         }
         return 1;
-    }
-
-    private void backtrackPath() {
-        Node tmp;
-        tmp = endNode;
-        while (tmp.getParent() != null) {
-            tmp = tmp.getParent();
-            if (!grid.isStart(tmp.getX(), tmp.getY()))
-                grid.setShortestPath(tmp.getX(), tmp.getY());
-        }
     }
 
     public void reset() {
