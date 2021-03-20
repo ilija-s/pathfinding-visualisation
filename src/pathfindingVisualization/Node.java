@@ -1,5 +1,7 @@
 package pathfindingVisualization;
 
+import java.util.*;
+
 public class Node {
     private int x;
     private int y;
@@ -19,6 +21,10 @@ public class Node {
         this.g = g;
         this.h = h;
         this.parent = parent;
+    }
+
+    public Node() {
+
     }
 
     public int getX() {
@@ -67,5 +73,20 @@ public class Node {
 
     public void setParent(Node parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return this.getX() == node.getX() &&
+                this.getY() == node.getY() &&
+                this.getParent() == node.getParent();
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
     }
 }

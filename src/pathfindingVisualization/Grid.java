@@ -1,5 +1,8 @@
 package pathfindingVisualization;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Grid {
     public static final int PATH = 0;
     public static final int WALL = 1;
@@ -86,6 +89,24 @@ public class Grid {
 
     public boolean isShortestPath(int row, int col) {
         return grid[row][col] == SHORTESTPATH;
+    }
+
+    public List<Node> getNeighbours(Node node) {
+        List<Node> neighbours = new LinkedList<>();
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                if (isValid(node.getX() + i, node.getY() + j) &&
+                        (isPath(node.getX() + i, node.getY() + j) ||
+                        isEnd(node.getX() + i, node.getY() + j))) {
+                    neighbours.add(new Node(node.getX() + i, node.getY() + j, node));
+                }
+            }
+        }
+        return neighbours;
     }
 
     public boolean isClosed(int row, int col) {

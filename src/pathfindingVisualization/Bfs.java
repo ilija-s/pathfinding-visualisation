@@ -15,7 +15,7 @@ public class Bfs {
     private Grid grid;
     private int startX;
     private int startY;
-    private boolean diagonalSearch = false;
+    private boolean diagonalSearch;
     private boolean[][] visited;
     private Deque<Node> nodes = new LinkedList<>();
     private Node endNode;
@@ -23,6 +23,7 @@ public class Bfs {
     public Bfs(MainWindow mainWindow, Grid grid, int startX, int startY, boolean diagonalSearch) {
         this.visited = new boolean[grid.getRows()][grid.getCols()];
         this.grid = grid;
+        this.endNode = new Node();
         this.startX = startX;
         this.startY = startY;
         this.diagonalSearch = diagonalSearch;
@@ -219,6 +220,7 @@ public class Bfs {
     public void reset() {
         this.startX = -1;
         this.startY = -1;
+        this.nodes = new LinkedList<>();
         for (int i = 0; i < grid.getRows(); i++) {
             for (int j = 0; j < grid.getCols(); j++) {
                 visited[i][j] = false;

@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -24,10 +25,12 @@ public class MainWindow extends VBox {
     private static final int VISITED = 4;
     private static final int SHORTESTPATH = 5;
     private static final int CLOSED = 6;
+    private Button btnAStar;
     private Button btnBFS;
     private Button btnDFS;
     private Button btnReset;
     private Button btnGenerateMaze;
+    private CheckBox cbDiagonal;
     private Label lblPathNotFound;
     private Canvas canvas;
     private int width = 900;
@@ -42,24 +45,29 @@ public class MainWindow extends VBox {
     private int drawMode;
     private boolean bfsInstantiated = false;
     private boolean dfsInstantiated = false;
+    private boolean aStarInstantiated = false;
     private Grid grid = new Grid(height/ gridCells, width/ gridCells);
     private Bfs bfs;
     private Dfs dfs;
+    private AStar aStar;
     private boolean diagonalSearch = true;
 
     public MainWindow() {
         HBox hbTop = new HBox(10);
         hbTop.setPadding(new Insets(5, 10, 5, 10));
 
+        this.btnAStar = new Button("A*");
         this.btnBFS = new Button("BFS");
         this.btnDFS = new Button("DFS");
         this.btnReset = new Button("Reset");
         this.btnGenerateMaze = new Button("Generate Maze");
+        this.cbDiagonal = new CheckBox("Diagonal search");
         this.lblPathNotFound = new Label("Path not found!");
         this.lblPathNotFound.setVisible(false);
-        hbTop.getChildren().addAll(btnBFS, btnDFS, btnGenerateMaze, btnReset, lblPathNotFound);
+        hbTop.getChildren().addAll(btnAStar, btnBFS, btnDFS, btnGenerateMaze, btnReset, cbDiagonal, lblPathNotFound);
 
         this.canvas = new Canvas(width, height);
+        this.btnAStar.setOnAction(this::solveWithAStar);
         this.btnDFS.setOnAction(this::solveWithDFS);
         this.btnBFS.setOnAction(this::solveWithBFS);
         this.btnGenerateMaze.setOnAction(this::generateMaze);
@@ -99,6 +107,10 @@ public class MainWindow extends VBox {
             dfs.setStartX(this.startX);
             dfs.setStartY(this.startY);
             dfs.reset();
+        } else if (aStarInstantiated) {
+            aStar.setGrid(this.grid);
+            aStar.setStart(this.startX, this.startY);
+            aStar.reset();
         }
         this.drawMode = 1;
         enableAllButtons();
@@ -120,7 +132,7 @@ public class MainWindow extends VBox {
 
     private void solveWithBFS(ActionEvent actionEvent) {
         if (startX != -1 && startY != -1 && endX != -1 && endY != -1) {
-            bfs = new Bfs(this, this.grid, this.startX, this.startY, diagonalSearch);
+            bfs = new Bfs(this, this.grid, this.startX, this.startY, cbDiagonal.isSelected());
             bfsInstantiated = true;
             bfs.startSearchTimeline();
             return;
@@ -130,12 +142,20 @@ public class MainWindow extends VBox {
 
     private void solveWithDFS(ActionEvent actionEvent) {
         if (startX != -1 && startY != -1 && endX != -1 && endY != -1) {
-            dfs = new Dfs(this, this.grid, this.startX, this.startY, diagonalSearch);
+            dfs = new Dfs(this, this.grid, this.startX, this.startY, cbDiagonal.isSelected());
             dfsInstantiated = true;
             dfs.startSearchTimeline();
             return;
         }
         this.lblPathNotFound.setVisible(true);
+    }
+
+    private void solveWithAStar(ActionEvent actionEvent) {
+        if (startX != -1 && endX != -1) {
+            aStar = new AStar(this, grid, startX, startY, endX, endY);
+            aStarInstantiated = true;
+            aStar.startAStarSearch();
+        }
     }
 
     private void handlePressedKey(KeyEvent keyEvent) {
@@ -207,6 +227,8 @@ public class MainWindow extends VBox {
         for (int y = 0; y <= width / gridCells; y++) {
             graphics.strokeLine(0, y, cellSize, y);
         }
+
+        this.canvas.requestFocus();
     }
 
     private void drawRect(int x, int y, final int cellValue) {
