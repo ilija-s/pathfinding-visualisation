@@ -54,8 +54,8 @@ public class MazeGenerator {
     }
 
     private void generate(ActionEvent actionEvent) {
-        if (!frontiers.isEmpty() ){
-            final int[] f = frontiers.remove(random.nextInt(frontiers.size() ) );
+        if (!frontiers.isEmpty()){
+            int[] f = frontiers.remove(random.nextInt(frontiers.size()));
             x = f[2];
             y = f[3];
             if (grid.isWall(x, y)) {

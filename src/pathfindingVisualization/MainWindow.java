@@ -24,7 +24,8 @@ public class MainWindow extends VBox {
     private static final int VISITED = 4;
     private static final int SHORTESTPATH = 5;
     private static final int CLOSED = 6;
-    private Button btnStart;
+    private Button btnBFS;
+    private Button btnDFS;
     private Button btnReset;
     private Button btnGenerateMaze;
     private Label lblPathNotFound;
@@ -40,23 +41,27 @@ public class MainWindow extends VBox {
     private Affine affine;
     private int drawMode;
     private boolean bfsInstantiated = false;
+    private boolean dfsInstantiated = false;
     private Grid grid = new Grid(height/ gridCells, width/ gridCells);
     private Bfs bfs;
+    private Dfs dfs;
     private boolean diagonalSearch = true;
 
     public MainWindow() {
         HBox hbTop = new HBox(10);
         hbTop.setPadding(new Insets(5, 10, 5, 10));
 
-        this.btnStart = new Button("Start");
+        this.btnBFS = new Button("BFS");
+        this.btnDFS = new Button("DFS");
         this.btnReset = new Button("Reset");
         this.btnGenerateMaze = new Button("Generate Maze");
         this.lblPathNotFound = new Label("Path not found!");
         this.lblPathNotFound.setVisible(false);
-        hbTop.getChildren().addAll(btnStart, btnGenerateMaze, btnReset, lblPathNotFound);
+        hbTop.getChildren().addAll(btnBFS, btnDFS, btnGenerateMaze, btnReset, lblPathNotFound);
 
         this.canvas = new Canvas(width, height);
-        this.btnStart.setOnAction(this::solveWithBFS);
+        this.btnDFS.setOnAction(this::solveWithDFS);
+        this.btnBFS.setOnAction(this::solveWithBFS);
         this.btnGenerateMaze.setOnAction(this::generateMaze);
         this.btnReset.setOnAction(this::reset);
         this.canvas.setOnMousePressed(this::drawSquare);
@@ -89,18 +94,26 @@ public class MainWindow extends VBox {
             bfs.setStartY(this.startY);
             bfs.reset();
         }
+        else if (dfsInstantiated) {
+            dfs.setGrid(this.grid);
+            dfs.setStartX(this.startX);
+            dfs.setStartY(this.startY);
+            dfs.reset();
+        }
         this.drawMode = 1;
         enableAllButtons();
     }
 
     private void enableAllButtons() {
-        this.btnStart.setDisable(false);
+        this.btnBFS.setDisable(false);
+        this.btnDFS.setDisable(false);
         this.btnGenerateMaze.setDisable(false);
         this.btnReset.setDisable(false);
     }
 
     private void disableAllButtons() {
-        this.btnStart.setDisable(true);
+        this.btnBFS.setDisable(true);
+        this.btnDFS.setDisable(true);
         this.btnGenerateMaze.setDisable(true);
         this.btnReset.setDisable(true);
     }
@@ -110,6 +123,16 @@ public class MainWindow extends VBox {
             bfs = new Bfs(this, this.grid, this.startX, this.startY, diagonalSearch);
             bfsInstantiated = true;
             bfs.startSearchTimeline();
+            return;
+        }
+        this.lblPathNotFound.setVisible(true);
+    }
+
+    private void solveWithDFS(ActionEvent actionEvent) {
+        if (startX != -1 && startY != -1 && endX != -1 && endY != -1) {
+            dfs = new Dfs(this, this.grid, this.startX, this.startY, diagonalSearch);
+            dfsInstantiated = true;
+            dfs.startSearchTimeline();
             return;
         }
         this.lblPathNotFound.setVisible(true);
