@@ -24,12 +24,24 @@ For now this app allows user to choose between few implemented pathfinding algor
 
 There is also one Maze generation algorithm, here I've implemented Prim's maze generation algorithm.
 
-Usage
------
+Commands
+--------
 
-* To select start point press "s" key and select cell
-* To select end point press "f"
-* To delete use "e" and for drawing walls use "d", select algorithm and press start
+* To select start point press *s* key and select cell
+* To select end point press *f* key and select end cell
+* To delete use *e* and for drawing walls use *d*, select algorithm and press start
+
+![basiccommands (1)](https://user-images.githubusercontent.com/46342896/111890493-0e49c400-89ea-11eb-9a1b-c7d13f108847.gif)
+
+Maze generation
+---------------
+
+![mazegeneration](https://user-images.githubusercontent.com/46342896/111890466-c3c84780-89e9-11eb-9846-c42b81a5ed77.gif)
+
+Breadth-First Search
+--------------------
+
+![bfs](https://user-images.githubusercontent.com/46342896/111890441-abf0c380-89e9-11eb-994f-3340eefd87a1.gif)
 
 Run
 ---
