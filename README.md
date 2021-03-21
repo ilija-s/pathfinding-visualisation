@@ -46,8 +46,8 @@ Breadth-First Search
 Run
 ---
 
-To run program you will need to have JavaFX downloaded (for Java versions above 8)  
-In Project Structure -> Libraries add path to JavaFX lib folder
+To run program you will need to have JavaFX 11 downloaded (for Java versions above 8) and Java 15  
+In Project Structure -> Libraries add path to JavaFX lib folder  
 And finally go to Run -> Edit Configurations and in Program arguments add this line
 
 ```
